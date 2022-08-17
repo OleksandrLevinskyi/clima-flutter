@@ -26,9 +26,15 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateStats(data) {
     setState(() {
-      temperature = (data['main']['temp'] as double).toInt();
-      condition = data['weather'][0]['id'];
-      city = data['name'];
+      if (data == null) {
+        temperature = 0;
+        condition = 0;
+        city = 'wherever you are';
+      } else {
+        temperature = (data['main']['temp'] as double).toInt();
+        condition = data['weather'][0]['id'];
+        city = data['name'];
+      }
     });
   }
 
