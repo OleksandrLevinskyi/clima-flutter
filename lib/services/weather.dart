@@ -1,5 +1,17 @@
+import 'package:clima/services/location.dart';
+import '../services/network_manager.dart';
+
 class Weather {
-  static String getWeatherIcon(int condition) {
+  Future<dynamic> getLocationData() async {
+    Location location = Location();
+
+    await location.getCurrentLocation();
+    dynamic data = await NetworkManager(location).getData();
+
+    return data;
+  }
+
+  String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
     } else if (condition < 400) {
@@ -19,7 +31,7 @@ class Weather {
     }
   }
 
-  static String getMessage(int temp) {
+  String getMessage(int temp) {
     if (temp > 25) {
       return 'It\'s 🍦 time';
     } else if (temp > 20) {
