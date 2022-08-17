@@ -16,6 +16,7 @@ class NetworkManager {
         'lat': location.latitude.toString(),
         'lon': location.longitude.toString(),
         'appid': dotenv.env['OPEN_WEATHER_API_KEY'],
+        'units': 'metric'
       },
     );
 

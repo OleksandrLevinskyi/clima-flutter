@@ -35,6 +35,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     final Map<String, dynamic> data = await NetworkManager(location).getData();
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LocationScreen()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationScreen(
+          weatherData: data,
+        ),
+      ),
+    );
   }
 }
