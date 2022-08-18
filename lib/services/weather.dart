@@ -2,11 +2,11 @@ import 'package:clima/services/location.dart';
 import '../services/network_manager.dart';
 
 class Weather {
-  Future<dynamic> getLocationData() async {
+  Future<dynamic> getLocationData({String city}) async {
     Location location = Location();
 
     await location.getCurrentLocation();
-    dynamic data = await NetworkManager(location).getData();
+    dynamic data = await NetworkManager(location).getData(city: city);
 
     return data;
   }

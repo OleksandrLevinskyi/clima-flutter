@@ -8,13 +8,25 @@ class NetworkManager {
 
   NetworkManager(this.location);
 
-  Future getData() async {
+  Future getData({String city}) async {
+    Map<String, String> queryParams;
+
+    if (city == null) {
+      queryParams = {
+        'lat': location.latitude.toString(),
+        'lon': location.longitude.toString(),
+      };
+    } else {
+      queryParams = {
+        'q': city,
+      };
+    }
+
     Uri url = Uri.https(
       dotenv.env['OPEN_WEATHER_API_URL'],
       dotenv.env['OPEN_WEATHER_API_PATH'],
       {
-        'lat': location.latitude.toString(),
-        'lon': location.longitude.toString(),
+        ...queryParams,
         'appid': dotenv.env['OPEN_WEATHER_API_KEY'],
         'units': 'metric'
       },

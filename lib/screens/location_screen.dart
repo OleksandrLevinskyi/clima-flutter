@@ -1,3 +1,4 @@
+import 'package:clima/screens/city_screen.dart';
 import 'package:clima/services/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
@@ -21,21 +22,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   void initState() {
     super.initState();
-    updateStats(widget.weatherData);
-  }
-
-  void updateStats(data) {
-    setState(() {
-      if (data == null) {
-        temperature = 0;
-        condition = 0;
-        city = 'wherever you are';
-      } else {
-        temperature = (data['main']['temp'] as double).toInt();
-        condition = data['weather'][0]['id'];
-        city = data['name'];
-      }
-    });
+    updateScreen(widget.weatherData);
   }
 
   @override
@@ -62,7 +49,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   TextButton(
                     onPressed: () async {
                       dynamic weatherData = await _weather.getLocationData();
-                      updateStats(weatherData);
+                      updateScreen(weatherData);
                     },
                     child: Icon(
                       Icons.near_me,
@@ -71,7 +58,18 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String typedCityName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CityScreen()),
+                      );
+
+                      if (typedCityName != null) {
+                        dynamic weatherData =
+                            await _weather.getLocationData(city: typedCityName);
+                        updateScreen(weatherData);
+                      }
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,
@@ -108,5 +106,19 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
       ),
     );
+  }
+
+  void updateScreen(data) {
+    setState(() {
+      if (data == null) {
+        temperature = 0;
+        condition = 0;
+        city = 'wherever you are';
+      } else {
+        temperature = (data['main']['temp'] as double).toInt();
+        condition = data['weather'][0]['id'];
+        city = data['name'];
+      }
+    });
   }
 }
